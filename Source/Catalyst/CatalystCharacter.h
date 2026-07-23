@@ -44,6 +44,8 @@ class ACatalystCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(VisibleAnywhere)
+	UActorComponent* CombatComponent;
 public:
 	ACatalystCharacter();
 	

@@ -10,6 +10,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Components/CombatComponent.h"
+
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -18,6 +20,10 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 ACatalystCharacter::ACatalystCharacter()
 {
+
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(
+		TEXT("Combat Component")
+	);
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
