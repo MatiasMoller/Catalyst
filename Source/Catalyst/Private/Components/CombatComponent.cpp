@@ -2,6 +2,7 @@
 
 
 #include "Components/CombatComponent.h"
+#include "Catalyst/CatalystCharacter.h"
 
 // Sets default values for this component's properties
 UCombatComponent::UCombatComponent()
@@ -17,9 +18,24 @@ UCombatComponent::UCombatComponent()
 // Called when the game starts
 void UCombatComponent::BeginPlay()
 {
-	Super::BeginPlay();
 
-	// ...
+		Super::BeginPlay();
+
+		Player = Cast<ACatalystCharacter>(GetOwner());
+
+		if (!Player)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Player reference is nullptr"));
+			return;
+		}
+
+		Gun = Player->GetGun();
+
+		if (!Gun)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Gun reference is nullptr"));
+			return;
+		}
 	
 }
 
@@ -34,6 +50,15 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UCombatComponent::Shoot()
 {
+	if (!Player)
+	{
+		UE_LOG(LogTemp, Error, TEXT("PLayer REF is nullptr"));
+		return;
+	}
+
 	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
+	Gun->PlayAnimation(GunShoot, false);
+
+	
 }
 
