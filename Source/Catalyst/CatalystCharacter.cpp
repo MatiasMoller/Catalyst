@@ -21,9 +21,7 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 ACatalystCharacter::ACatalystCharacter()
 {
 
-	CombatComponent = CreateDefaultSubobject<UCombatComponent>(
-		TEXT("Combat Component")
-	);
+	CombatComponent = CreateDefaultSubobject<UCombatComponent>(	TEXT("Combat Component"));
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
