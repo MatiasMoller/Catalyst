@@ -138,3 +138,8 @@ USkeletalMeshComponent* ACatalystCharacter::GetGun() const
 {
 	return Gun;
 }
+
+UCameraComponent* ACatalystCharacter::GetCamera() const
+{
+	return FollowCamera;
+}

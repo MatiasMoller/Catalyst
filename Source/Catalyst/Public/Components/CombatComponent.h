@@ -28,7 +28,12 @@ public:
 
     UFUNCTION(BlueprintCallable)
     void Shoot();
+    UPROPERTY()
+    class UCameraComponent* Camera;
 
+   
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float ShootCooldown = 2.0f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UAnimationAsset* GunShoot;
 private:
@@ -37,5 +42,14 @@ private:
    UPROPERTY()
    USkeletalMeshComponent* Gun;
     
-  
+
+private:
+
+    bool bCanShoot = true;
+
+ 
+
+    FTimerHandle ShootTimerHandle;
+
+    void ResetShoot();
 };

@@ -52,6 +52,7 @@ public:
 	ACatalystCharacter();
 
 	USkeletalMeshComponent* GetGun() const;
+	UCameraComponent* GetCamera() const;
 
 protected:
 
