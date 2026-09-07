@@ -31,6 +31,12 @@ public:
     UPROPERTY()
     class UCameraComponent* Camera;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float Health;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    float MaxHealth = 100.0f;;
+
    
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float ShootCooldown = 2.0f;

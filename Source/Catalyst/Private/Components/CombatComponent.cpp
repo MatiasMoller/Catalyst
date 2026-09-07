@@ -22,6 +22,8 @@ void UCombatComponent::BeginPlay()
 {
     Super::BeginPlay();
 
+    Health = MaxHealth;
+
     Player = Cast<ACatalystCharacter>(GetOwner());
 
     if (!Player)
@@ -67,7 +69,7 @@ void UCombatComponent::Shoot()
     // Make sure we aren't on cooldown
     if (!bCanShoot)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Still on cooldown"));
+        UE_LOG(LogTemp, Error, TEXT("Still on cooldown"));
         return;
     }
 
@@ -103,31 +105,91 @@ void UCombatComponent::Shoot()
         Hit,
         Start,
         End,
-        ECC_Visibility,
+        ECC_WorldStatic,
         QueryParams
     );
 
-    // Debug line
-    DrawDebugLine(
-        GetWorld(),
-        Start,
-        End,
-        FColor::Red,
-        false,
-        2.0f,
-        0,
-        2.0f
-    );
-
-    // Check if we hit something
+    // Debug
     if (bHit)
     {
-        UE_LOG(
-            LogTemp,
-            Warning,
-            TEXT("Hit: %s"),
-            *Hit.GetActor()->GetName()
+       
+        // Draw only until the thing we hit
+        DrawDebugLine(
+            GetWorld(),
+            Start,
+            Hit.ImpactPoint,
+            FColor::Green,
+            false,
+            2.0f,
+            0,
+            2.0f
         );
+
+        DrawDebugPoint(
+            GetWorld(),
+            Hit.ImpactPoint,
+            15.0f,
+            FColor::Yellow,
+            false,
+            2.0f
+        );
+    }
+    else
+    {
+        // Didn't hit anything
+        DrawDebugLine(
+            GetWorld(),
+            Start,
+            End,
+            FColor::Red,
+            false,
+            2.0f,
+            0,
+            2.0f
+        );
+    }
+
+    // Check if we hit something
+    {
+        AActor* HitActor = Hit.GetActor();
+
+        if (HitActor)
+        {
+            UE_LOG(
+                LogTemp,
+                Warning,
+                TEXT("Hit: %s"),
+                *HitActor->GetName()
+            );
+
+            // Look for a Combat Component on the actor we hit
+            UCombatComponent* CombatComponent =
+                HitActor->FindComponentByClass<UCombatComponent>();
+
+            if (CombatComponent)
+            {
+                UE_LOG(
+                    LogTemp,
+                    Warning,
+                    TEXT("Actor has Combat Component!")
+                );
+
+                CombatComponent->Health -= 50.0f;
+
+                if (CombatComponent->Health <= 0.0f)
+                {
+                    HitActor->Destroy();
+                }
+            }
+            else
+            {
+                UE_LOG(
+                    LogTemp,
+                    Warning,
+                    TEXT("Actor DOES NOT have Combat Component!")
+                );
+            }
+        }
     }
 
     // Start shooting cooldown
