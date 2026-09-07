@@ -52,10 +52,15 @@ private:
 private:
 
     bool bCanShoot = true;
-
- 
-
     FTimerHandle ShootTimerHandle;
-
+    FVector Start;
+    FVector Forward;
+    FVector End;
+    FHitResult Hit;
+    float TraceDistance;
+    bool bHit = false;
+    void LineTrace();
+    void DebugTrace();
+    void LineTraceLogic();
     void ResetShoot();
 };

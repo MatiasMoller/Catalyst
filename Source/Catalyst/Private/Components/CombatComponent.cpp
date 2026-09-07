@@ -83,36 +83,67 @@ void UCombatComponent::Shoot()
     {
         Gun->PlayAnimation(GunShoot, false);
     }
+    //PerformLineTrace
+    LineTrace();
+
+    // Debug Trace
+    DebugTrace();
+
+    //TraceLogic
+    LineTraceLogic();
+
+
+    // Start shooting cooldown
+    GetWorld()->GetTimerManager().SetTimer(
+        ShootTimerHandle,
+        this,
+        &UCombatComponent::ResetShoot,
+        ShootCooldown,
+        false
+    );
+}
+
+void UCombatComponent::ResetShoot()
+{
+    bCanShoot = true;
+
+    UE_LOG(LogTemp, Warning, TEXT("Shoot cooldown finished"));
+}
+
+void UCombatComponent::LineTrace()
+{
 
     // Get camera position and direction
-    FVector Start = Camera->GetComponentLocation();
-    FVector Forward = Camera->GetForwardVector();
+     Start = Camera->GetComponentLocation();
+     Forward = Camera->GetForwardVector();
 
     // How far the shot can travel
-    float TraceDistance = 10000.0f;
+    TraceDistance = 10000.0f;
 
-    FVector End = Start + (Forward * TraceDistance);
+    End = Start + (Forward * TraceDistance);
 
     // Store hit information
-    FHitResult Hit;
+    Hit;
 
     // Ignore the player who fired
     FCollisionQueryParams QueryParams;
     QueryParams.AddIgnoredActor(Player);
 
     // Perform line trace
-    bool bHit = GetWorld()->LineTraceSingleByChannel(
+        bHit = GetWorld()->LineTraceSingleByChannel(
         Hit,
         Start,
         End,
         ECC_WorldStatic,
         QueryParams
     );
+}
 
-    // Debug
+void UCombatComponent::DebugTrace()
+{
     if (bHit)
     {
-       
+
         // Draw only until the thing we hit
         DrawDebugLine(
             GetWorld(),
@@ -148,6 +179,10 @@ void UCombatComponent::Shoot()
             2.0f
         );
     }
+}
+
+void UCombatComponent::LineTraceLogic()
+{
 
     // Check if we hit something
     {
@@ -191,20 +226,4 @@ void UCombatComponent::Shoot()
             }
         }
     }
-
-    // Start shooting cooldown
-    GetWorld()->GetTimerManager().SetTimer(
-        ShootTimerHandle,
-        this,
-        &UCombatComponent::ResetShoot,
-        ShootCooldown,
-        false
-    );
-}
-
-void UCombatComponent::ResetShoot()
-{
-    bCanShoot = true;
-
-    UE_LOG(LogTemp, Warning, TEXT("Shoot cooldown finished"));
 }
