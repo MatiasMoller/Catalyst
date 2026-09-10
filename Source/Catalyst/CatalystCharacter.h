@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "Logging/LogMacros.h"
 
 #include "CatalystCharacter.generated.h"
@@ -47,12 +48,18 @@ class ACatalystCharacter : public ACharacter
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
 	USkeletalMeshComponent* Gun;
+
+	/** Look Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UParticleSystemComponent* MuzzleFlash;
+	
 	
 public:
 	ACatalystCharacter();
 
 	USkeletalMeshComponent* GetGun() const;
 	UCameraComponent* GetCamera() const;
+	UParticleSystemComponent* GetMuzzleFlash() const;
 
 protected:
 

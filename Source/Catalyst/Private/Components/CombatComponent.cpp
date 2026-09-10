@@ -5,6 +5,8 @@
 #include "Catalyst/CatalystCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "TimerManager.h"
 
 // Sets default values for this component's properties
@@ -34,6 +36,8 @@ void UCombatComponent::BeginPlay()
 
     Gun = Player->GetGun();
     Camera = Player->GetCamera();
+
+    
 
     if (!Gun)
     {
@@ -82,6 +86,9 @@ void UCombatComponent::Shoot()
     if (Gun)
     {
         Gun->PlayAnimation(GunShoot, false);
+
+        Player->GetMuzzleFlash()->Activate(true);
+        UGameplayStatics::PlaySound2D(GetWorld(),GunExplosionSound);
     }
     //PerformLineTrace
     LineTrace();
@@ -135,8 +142,16 @@ void UCombatComponent::LineTrace()
         Start,
         End,
         ECC_WorldStatic,
-        QueryParams
-    );
+        QueryParams );
+
+        UGameplayStatics::SpawnEmitterAtLocation(
+            GetWorld(),
+            GunExplosion,
+            Hit.ImpactPoint,
+            FRotator::ZeroRotator,
+            true
+
+        );
 }
 
 void UCombatComponent::DebugTrace()

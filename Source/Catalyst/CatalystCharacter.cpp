@@ -56,6 +56,10 @@ ACatalystCharacter::ACatalystCharacter()
 
 	Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Gun"));
 	Gun->SetupAttachment(FollowCamera);
+	
+	MuzzleFlash = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("MuzzleFlash"));
+	MuzzleFlash->SetupAttachment(Gun);
+	
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
@@ -142,4 +146,9 @@ USkeletalMeshComponent* ACatalystCharacter::GetGun() const
 UCameraComponent* ACatalystCharacter::GetCamera() const
 {
 	return FollowCamera;
+}
+
+UParticleSystemComponent* ACatalystCharacter::GetMuzzleFlash() const
+{
+	return MuzzleFlash;
 }

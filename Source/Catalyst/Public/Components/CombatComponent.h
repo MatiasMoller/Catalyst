@@ -3,6 +3,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Particles/ParticleSystem.h"
 #include "CombatComponent.generated.h"
 
 
@@ -44,6 +45,12 @@ public:
     UAnimationAsset* GunShoot;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     bool WantDebug;
+   
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UParticleSystem* GunExplosion;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    USoundWave* GunExplosionSound;
    
 private:
     UPROPERTY()
