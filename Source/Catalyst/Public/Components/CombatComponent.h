@@ -42,6 +42,9 @@ public:
     float ShootCooldown = 2.0f;
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     UAnimationAsset* GunShoot;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    bool WantDebug;
+   
 private:
     UPROPERTY()
    ACatalystCharacter* Player;

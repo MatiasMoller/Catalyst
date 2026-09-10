@@ -141,6 +141,10 @@ void UCombatComponent::LineTrace()
 
 void UCombatComponent::DebugTrace()
 {
+    if (!WantDebug)
+    {
+        return;
+    }
     if (bHit)
     {
 
